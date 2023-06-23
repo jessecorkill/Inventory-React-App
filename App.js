@@ -1,24 +1,13 @@
 import {useState, useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Alert, Component, SafeAreaView, ScrollView, FlatList} from 'react-native';
+import { StyleSheet, Text, View, Alert, Component, SafeAreaView, ScrollView, FlatList, Button} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Button, ThemeProvider} from 'react-native-elements';
+import {ThemeProvider} from 'react-native-elements';
 import {BarCodeScanner} from 'expo-barcode-scanner';
-
-    function alertThing(){
-        Alert.alert('Love you. :)')
-    }
-    const showList = () => {
-        return "This works!";
-    }
-    const Item = ({title}) => (
-        <View>
-            <Text>{title}</Text>
-        </View>
-    );
 
 export default function App() {
     //const [hasPermission, setHasPermission] = useState(null);
+    const [curPage, setCurPage] = 'main';
 
     const today = new Date();
 
@@ -29,7 +18,7 @@ export default function App() {
 //<FlatList style={styles.dataDisplay} data={items} renderItem={renderItem} keyExtractor={(item) => item.time}/>
   return (
     <SafeAreaView style={styles.container}>
-
+      <Button onPress={functionName} title="Add / Remove Items"></Button>
 
     </SafeAreaView>
   );

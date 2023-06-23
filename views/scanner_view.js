@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 
-class ScannerView extends Component {
-  constructor(props) {
-    super(props);
-    // Initialize state or bind event handlers if needed
-  }
+const ScannerView = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>Hello, React Native!</Text>
+    </View>
+  );
+};
 
-  componentDidMount() {
-    // Code to run after the component is mounted
-  }
-
-  componentWillUnmount() {
-    // Code to run before the component is unmounted
-  }
-
-  render() {
-    return (
-      <div>
-        {/* JSX content goes here */}
-      </div>
-    );
-  }
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
 
 export default ScannerView;

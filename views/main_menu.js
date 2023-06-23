@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
+import {Button, StyleSheet, View} from 'react-native';
 
-class MainMenu extends Component {
-  constructor(props) {
-    super(props);
-    // Initialize state or bind event handlers if needed
-  }
+const MainMenu = (navigation) => {
 
-  componentDidMount() {
-    // Code to run after the component is mounted
-  }
 
-  componentWillUnmount() {
-    // Code to run before the component is unmounted
-  }
 
-  render() {
-    return (
-      <div>
-        {/* JSX content goes here */}
-      </div>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      <Button title="Add or Remove Item" onPress={() => navigation.navigate('Scanner', {container: '0'})}></Button>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
 
 export default MainMenu;

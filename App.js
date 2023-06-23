@@ -3,7 +3,14 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Alert, Component, SafeAreaView, ScrollView, FlatList, Button} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {ThemeProvider} from 'react-native-elements';
-import {BarCodeScanner} from 'expo-barcode-scanner';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import MainMenu from './views/main_menu.js';
+import ScannerView from './views/scanner_view.js';
+
+const Stack = createNativeStackNavigator();
+
+
 
 export default function App() {
     //const [hasPermission, setHasPermission] = useState(null);
@@ -12,17 +19,17 @@ export default function App() {
     const today = new Date();
 
 
-
-
 //For App Later..
 //<FlatList style={styles.dataDisplay} data={items} renderItem={renderItem} keyExtractor={(item) => item.time}/>
   return (
-    <SafeAreaView style={styles.container}>
-      <Button onPress={functionName} title="Add / Remove Items"></Button>
-
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>        
+        <Stack.Screen name="Main" component={MainMenu}></Stack.Screen>
+        <Stack.Screen name="Scanner" component={ScannerView}></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+} 
 
 const styles = StyleSheet.create({
   dataDisplay:{

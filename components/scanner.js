@@ -57,7 +57,7 @@ export default function Scanner() {
 
   // Main component UI
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.barcodeDisplay}>
         <StatusBar style="auto" />
         <BarCodeScanner onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} style={styles.barcode} />
@@ -67,7 +67,7 @@ export default function Scanner() {
         <Button title="Push Me" onPress={() => { toggleVis }} />
         <Button title={counter} onPress={() => { setCounter(counter + 1) }} />
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 const styles = StyleSheet.create({

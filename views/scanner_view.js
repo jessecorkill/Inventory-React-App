@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import Scanner from '../components/scanner';
 
 const ScannerView = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Hello, React Native!</Text>
+      <Scanner></Scanner>
     </View>
   );
 };

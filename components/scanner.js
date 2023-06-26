@@ -13,7 +13,7 @@ const Item = ({ title }) => (
 );
 
 // Main Scanner component
-export default function Scanner() {
+export default function Scanner(props) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [isVisible, setVisibility] = useState(false);
@@ -21,6 +21,7 @@ export default function Scanner() {
   const [counter, setCounter] = useState(0);
 
   const today = new Date();
+
 
   useEffect(() => {
     // Request camera permissions on component mount
@@ -31,11 +32,10 @@ export default function Scanner() {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    const newItems = items.concat('banana');
-    setItems(newItems);
-    setCounter(counter + 1);
+    //setScanned(true);
+    props.handleScan(data);
+    //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+ 
   };
 
   const renderItem = ({ item }) => {
@@ -65,7 +65,7 @@ export default function Scanner() {
       </View>
       <View style={styles.buttonDisplay}>
         <Button title="Push Me" onPress={() => { toggleVis }} />
-        <Button title={counter} onPress={() => { setCounter(counter + 1) }} />
+        <Button title="Force Success" onPress={() => { props.handleScan() }} />
       </View>
     </View>
   );

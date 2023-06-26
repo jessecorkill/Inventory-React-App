@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainMenu from './views/main_menu.js';
 import ScannerView from './views/scanner_view.js';
+import CounterView from './views/counter_view.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,8 @@ export default function App() {
       <Stack.Navigator>        
         <Stack.Screen name="Main" component={MainMenu}></Stack.Screen>
         <Stack.Screen name="Scanner" component={ScannerView} items={inventoryUpdate}></Stack.Screen>
+        <Stack.Screen name="Counter" component={CounterView} items={inventoryUpdate}></Stack.Screen>
+
       </Stack.Navigator>
     </NavigationContainer>
   );

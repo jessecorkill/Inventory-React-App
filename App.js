@@ -16,14 +16,23 @@ const Stack = createNativeStackNavigator();
 export default function App() {
     //const [hasPermission, setHasPermission] = useState(null);
     const [inventoryUpdate, setInventoryUpdate] = useState([]); //Will be an array of arrays (inventory containers). Each container object will have sub item objects with details of the items being added / removed.
+    const [selectedItem, selectItem] = useState(null);
+    const [inventoryHistory, setInventoryHistory] = useState([]);
+    
+    //Function for components to temporarily hold an item's data to view and edit
+    const holdItem = (itemCode) => {
+      selectItem(itemCode)
+    }
 
     //Function to allow child components to add new changes to inventory. 
     const addInventoryChange = (itemChange) => {
       itemContainer = itemChange.container; // eg. 1
       
       newInventory = inventoryUpdate[itemContainer].push(itemChange); //Make a new version of the inventory change index w/ the new item change object added.
-
       setInventoryUpdate(newInventory); 
+      
+      newHistory = inventoryHistory.append(newInventory);
+      setInventoryHistory(newHistory);
     }
 
     const today = new Date();
@@ -35,9 +44,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>        
         <Stack.Screen name="Main" component={MainMenu}></Stack.Screen>
-        <Stack.Screen name="Scanner" component={ScannerView} items={inventoryUpdate}></Stack.Screen>
-        <Stack.Screen name="Counter" component={CounterView} items={inventoryUpdate}></Stack.Screen>
-
+        <Stack.Screen name="Scanner" holdItem={holdItem} component={ScannerView} items={inventoryUpdate}></Stack.Screen>
+        <Stack.Screen name="Counter" heldItem={selectedItem} component={CounterView} items={inventoryUpdate}></Stack.Screen>
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

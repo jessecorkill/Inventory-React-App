@@ -9,24 +9,40 @@ const CounterView = () => {
 
   const [theCount, setCounter] = useState(null);
   const [theContainer, setContainer] = useState(null);
+  //To-Do have this populate from API data source
+  const [containerOptions, setContainerOptions] = useState([
+    {label: 'Truck A', value: '1'},
+    {label: 'Truck B', value: '2'},
+    {label: 'Warehouse A', value: '3'},
+    {label: 'Warehouse B', value: '4'},
+  ]);
   const [containerFieldState, setContainerFieldState] = useState(false);
   const [containerValue, setContainerValue] = useState(null);
 
+  const setSelectedContainer = () => {
+
+  }
+
+  const updateContainerOptions = () => {
+
+  }
 
   return (
     <View style={styles.container}>
-      <View style={styles.title}>
-        <Text>Product Name</Text>
+      <View style={styles.titleSection}>
+        <Text style={styles.title}>Product Name</Text>
+        <Text>Container To Add Item To</Text>
         <DropDownPicker
           open={containerFieldState}
-          value={value}
-          items={items}
-          setOpen={setOpen}
-          setValue={e=>setContainerValue(e.targe.value)}
-          setItems={setItems}
+          value={containerValue}
+          items={containerOptions}
+          setOpen={setContainerFieldState} //State callback that is called when the user presses the picker.
+          setValue={setContainerValue} //State callback that is called when the value changes.
+          setItems={setContainerOptions} //State callback that is called to modify or add new items.
         />
       </View>
       <View style={styles.scrollPicker}>
+        <Text>Ammount to Add</Text>
         <TextInput onChange={e=>setCounter(e.target.value)} style={styles.inputBox} value={theCount} inputMode={"numeric"}></TextInput>
       </View>
 
@@ -45,8 +61,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 0,
   },
-  title: {
+  titleSection: {
     flex: 1,
+
+  },
+  title: {
     fontSize: 20,
     fontWeight: 'bold',
   },

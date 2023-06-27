@@ -22,7 +22,7 @@ const ScannerView = (props) => {
 
   //Function to pass to sub components to change the state of 'scanned'
   const handleBarCodeScanned = (itemData) => {
-
+    props.holdItem(itemData)
     setScanned(true);
   }
 

@@ -44,8 +44,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>        
         <Stack.Screen name="Main" component={MainMenu}></Stack.Screen>
-        <Stack.Screen name="Scanner" holdItem={holdItem} component={ScannerView} items={inventoryUpdate}></Stack.Screen>
-        <Stack.Screen name="Counter" heldItem={selectedItem} component={CounterView} items={inventoryUpdate}></Stack.Screen>
+        <Stack.Screen name="Scanner"  component={ScannerView} initialParams={{holdItem: holdItem, items: inventoryUpdate}}></Stack.Screen>
+        <Stack.Screen name="Counter" component={CounterView} initialParams={{heldItem: selectedItem, items: inventoryUpdate}}></Stack.Screen>
         
       </Stack.Navigator>
     </NavigationContainer>

@@ -6,6 +6,8 @@ import Scanner from '../components/scanner';
 
 const ScannerView = (props) => {
 
+
+
   const [scanned, setScanned] = useState(false);
 
   // Button to render if scanned == true
@@ -22,7 +24,8 @@ const ScannerView = (props) => {
 
   //Function to pass to sub components to change the state of 'scanned'
   const handleBarCodeScanned = (itemData) => {
-    props.holdItem(itemData)
+    alert(JSON.stringify(props))
+    props.route.holdItem(itemData); // Undefined is not a function, meaning it doesn't think holdItem is a function
     setScanned(true);
   }
 

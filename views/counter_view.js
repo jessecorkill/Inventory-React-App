@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 const scrollWheelData = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; 
 
-const CounterView = () => {
+const CounterView = (props) => {
 
   const [theCount, setCounter] = useState(null);
   const [theContainer, setContainer] = useState(null);
@@ -30,6 +30,7 @@ const CounterView = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleSection}>
+        <Text>{props.heldItem}</Text>
         <Text style={styles.title}>Product Name</Text>
         <Text>Container To Add Item To</Text>
         <DropDownPicker

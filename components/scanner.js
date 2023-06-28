@@ -17,11 +17,8 @@ export default function Scanner(props) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [isVisible, setVisibility] = useState(false);
-  const [items, setItems] = useState([]);
-  const [counter, setCounter] = useState(0);
 
   const today = new Date();
-
 
   useEffect(() => {
     // Request camera permissions on component mount
@@ -34,13 +31,8 @@ export default function Scanner(props) {
   const handleBarCodeScanned = ({ type, data }) => {
     //setScanned(true);
     props.handleScan(data);
-    //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+   
  
-  };
-
-  const renderItem = ({ item }) => {
-    // Render individual item using the Item component
-    <Item title={item.title} />
   };
 
   const toggleVis = () => {

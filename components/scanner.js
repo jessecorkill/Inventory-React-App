@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Alert, Component, SafeAreaView, ScrollView, Fla
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Button, ThemeProvider } from 'react-native-elements';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { EventEmitter } from '../events/eventIndex';
 
 // Item component for rendering individual items
 const Item = ({ title }) => (
@@ -16,7 +17,7 @@ const Item = ({ title }) => (
 export default function Scanner(props) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [isVisible, setVisibility] = useState(false);
+  const [isVisible, setVisibility] = useState(false);  
 
   const today = new Date();
 
@@ -57,7 +58,7 @@ export default function Scanner(props) {
       </View>
       <View style={styles.buttonDisplay}>
         <Button title="Push Me" onPress={() => { toggleVis }} />
-        <Button title="Force Success" onPress={() => { props.handleScan() }} />
+        <Button title="Force Success" onPress={() => { props.handleScan('1234567890') }} />
       </View>
     </View>
   );

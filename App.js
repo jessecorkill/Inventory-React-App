@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainMenu from './views/main_menu.js';
 import ScannerView from './views/scanner_view.js';
 import CounterView from './views/counter_view.js';
+import {EventEmitter} from './events/eventIndex.js'
 
 const Stack = createNativeStackNavigator();
 
@@ -20,9 +21,18 @@ export default function App() {
     const [inventoryHistory, setInventoryHistory] = useState([]);
     
     //Function for components to temporarily hold an item's data to view and edit
-    const holdItem = (itemCode) => {
+    const holdItem = (itemCode) => {      
       selectItem(itemCode)
     }
+
+    useEffect(() => {
+      EventEmitter.on("holdItem", holdItem);
+
+      return () => {
+         EventEmitter.off("holdItem", holdItem);
+      };
+
+    }, [holdItem]);
 
     //Function to allow child components to add new changes to inventory. 
     const addInventoryChange = (itemChange) => {
@@ -44,9 +54,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>        
         <Stack.Screen name="Main" component={MainMenu}></Stack.Screen>
-        <Stack.Screen name="Scanner"  component={ScannerView} initialParams={{holdItem: holdItem, items: inventoryUpdate}}></Stack.Screen>
-        <Stack.Screen name="Counter" component={CounterView} initialParams={{heldItem: selectedItem, items: inventoryUpdate}}></Stack.Screen>
-        
+        <Stack.Screen name="Scanner"  component={ScannerView} initialParams={{eventName: "holdItem", items: inventoryUpdate}}></Stack.Screen>
+        <Stack.Screen name="Counter" component={CounterView} initialParams={{heldItem: selectedItem, items: inventoryUpdate}}></Stack.Screen>        
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -24,7 +24,9 @@ export default function App() {
     const holdItem = (itemCode) => {      
       selectItem(itemCode)
     }
-
+    //    EventEmitter.subscribe('itemScannedEvent', (itemData) =>
+    // this.holdItem(itemData)
+    // )
     useEffect(() => {
       EventEmitter.on("holdItem", holdItem);
 

@@ -28,6 +28,7 @@ const { eventName } = props.route.params;
   const handleBarCodeScanned = (itemData) => {
     //alert(JSON.stringify(props))
     //props.route.holdItem(itemData); // Undefined is not a function, meaning it doesn't think holdItem is a function
+    EventEmitter.dispatch('itemScannedEvent', itemData);
     setScanned(true);
   }
 

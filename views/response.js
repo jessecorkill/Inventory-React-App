@@ -5,7 +5,7 @@ import { EventEmitter } from '../events/eventIndex';
 
 
 
-const Preview = (props) => {
+const ResponseView = (props) => {
 
 //const { eventName } = props.route.params;
 
@@ -16,7 +16,6 @@ const Preview = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text>Preview View</Text>
     </View>
   );
 };
@@ -33,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Preview;
+export default ResponseView;

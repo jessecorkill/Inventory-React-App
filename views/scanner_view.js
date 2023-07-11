@@ -1,7 +1,6 @@
 import React, { Component, useState } from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
 import Scanner from '../components/scanner';
-import { event } from '../events/eventIndex';
 import { EventEmitter } from '../events/eventIndex';
 
 

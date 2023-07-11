@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, Alert, Component, SafeAreaView, ScrollView, Fla
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Button, ThemeProvider } from 'react-native-elements';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { EventEmitter } from '../events/eventIndex';
 
 // Item component for rendering individual items
 const Item = ({ title }) => (

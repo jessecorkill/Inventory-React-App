@@ -8,6 +8,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainMenu from './views/main_menu.js';
 import ScannerView from './views/scanner_view.js';
 import CounterView from './views/counter_view.js';
+import Preview from './views/preview_view.js';
+import ResponseView from './views/response.js';
 import {EventEmitter} from './events/eventIndex.js'
 
 const Stack = createNativeStackNavigator();
@@ -23,29 +25,25 @@ export default function App() {
     //Function for components to temporarily hold an item's data to view and edit
     const holdItem = (itemCode) => {      
       selectItem(itemCode)
+      //Alert.alert('Item Held', itemCode);
     }
-    //    EventEmitter.subscribe('itemScannedEvent', (itemData) =>
-    // this.holdItem(itemData)
-    // )
-    useEffect(() => {
-      EventEmitter.on("holdItem", holdItem);
-
-      return () => {
-         EventEmitter.off("holdItem", holdItem);
-      };
-
-    }, [holdItem]);
+    EventEmitter.subscribe('itemScannedEvent', (event) => holdItem(event));
 
     //Function to allow child components to add new changes to inventory. 
     const addInventoryChange = (itemChange) => {
-      itemContainer = itemChange.container; // eg. 1
-      
-      newInventory = inventoryUpdate[itemContainer].push(itemChange); //Make a new version of the inventory change index w/ the new item change object added.
+      const newInventory = inventoryUpdate;
+      const cont = itemChange.container;
+      if(!newInventory[cont]){
+        newInventory[cont] = []; // Initiate container if it doesn't exist. 
+      }           
+      newInventory[cont].push(itemChange); // Make a new version of the inventory change index w/ the new item change object added.
       setInventoryUpdate(newInventory); 
       
-      newHistory = inventoryHistory.append(newInventory);
-      setInventoryHistory(newHistory);
+      // const newHistory = inventoryHistory.append(newInventory); 
+      // setInventoryHistory(newHistory);
     }
+
+    EventEmitter.subscribe('inventoryChangeEvent', (event) => addInventoryChange(event));
 
     const today = new Date();
 
@@ -56,8 +54,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>        
         <Stack.Screen name="Main" component={MainMenu}></Stack.Screen>
-        <Stack.Screen name="Scanner"  component={ScannerView} initialParams={{eventName: "holdItem", items: inventoryUpdate}}></Stack.Screen>
-        <Stack.Screen name="Counter" component={CounterView} initialParams={{heldItem: selectedItem, items: inventoryUpdate}}></Stack.Screen>        
+        <Stack.Screen name="Scanner"  component={ScannerView} initialParams={{items: inventoryUpdate}}></Stack.Screen>
+        <Stack.Screen name="Counter" component={CounterView} initialParams={{heldItem: selectedItem, items: inventoryUpdate}}></Stack.Screen>
+        <Stack.Screen name ="Preview" component={Preview}  initialParams={{items: inventoryUpdate}}></Stack.Screen>      
+        <Stack.Screen name="Response" component={ResponseView} initialParams={{items: inventoryUpdate}}></Stack.Screen>  
       </Stack.Navigator>
     </NavigationContainer>
   );

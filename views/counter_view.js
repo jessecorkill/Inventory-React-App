@@ -13,10 +13,10 @@ const CounterView = (props) => {
   const [theCount, setCounter] = useState('');
   //To-Do have this populate from API data source
   const [containerOptions, setContainerOptions] = useState([
-    {label: 'Truck A', value: '1'},
-    {label: 'Truck B', value: '2'},
-    {label: 'Warehouse A', value: '3'},
-    {label: 'Warehouse B', value: '4'},
+    {label: 'Truck A', value: 'Truck A'},
+    {label: 'Truck B', value: 'Truck B'},
+    {label: 'Warehouse A', value: 'Warehouse A'},
+    {label: 'Warehouse B', value: 'Warehouse B'},
   ]);
   const [containerFieldState, setContainerFieldState] = useState(false);
   const [containerValue, setContainerValue] = useState(null);

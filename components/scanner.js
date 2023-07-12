@@ -8,6 +8,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 
 // Main Scanner component
 export default function Scanner(props) {
+
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [isVisible, setVisibility] = useState(false);
@@ -46,7 +47,7 @@ export default function Scanner(props) {
   // Main component UI
   return (
     <View style={styles.container}>
-      <Text>Barcode: {barcode}</Text>
+      <Text>Barcode: {props.heldItem}</Text>
       <View style={styles.barcodeDisplay}>
         <StatusBar style="auto" />
         <BarCodeScanner onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} style={styles.barcode} />
@@ -54,7 +55,7 @@ export default function Scanner(props) {
       </View>
       <View style={styles.buttonDisplay}>
         <Button title="Push Me" onPress={() => { toggleVis }} />
-        <Button title="Faux Scan" onPress={() => { () => handleBarCodeScanned('1234567890') }} />
+        <Button title="Faux Scan" onPress={() => props.handleScan('1234567890') } />
       </View>
     </View>
   );

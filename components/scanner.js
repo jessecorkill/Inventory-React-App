@@ -5,18 +5,13 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Button, ThemeProvider } from 'react-native-elements';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-// Item component for rendering individual items
-const Item = ({ title }) => (
-  <View>
-    <Text>{title}</Text>
-  </View>
-);
 
 // Main Scanner component
 export default function Scanner(props) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [isVisible, setVisibility] = useState(false);  
+  const [isVisible, setVisibility] = useState(false);
+  const [barcode, setBarcode] = useState("")  ;
 
   const today = new Date();
 
@@ -29,6 +24,7 @@ export default function Scanner(props) {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
+    setBarcode(data);
     //setScanned(true);
     props.handleScan(data);
    
@@ -50,6 +46,7 @@ export default function Scanner(props) {
   // Main component UI
   return (
     <View style={styles.container}>
+      <Text>Barcode: {barcode}</Text>
       <View style={styles.barcodeDisplay}>
         <StatusBar style="auto" />
         <BarCodeScanner onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} style={styles.barcode} />
@@ -57,7 +54,7 @@ export default function Scanner(props) {
       </View>
       <View style={styles.buttonDisplay}>
         <Button title="Push Me" onPress={() => { toggleVis }} />
-        <Button title="Force Success" onPress={() => { props.handleScan('1234567890') }} />
+        <Button title="Faux Scan" onPress={() => { () => handleBarCodeScanned('1234567890') }} />
       </View>
     </View>
   );
@@ -82,6 +79,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
+      gap: 5,
     },
     container: {
       flexDirection: 'column',

@@ -20,37 +20,52 @@ const CounterView = (props) => {
   ]);
   const [containerFieldState, setContainerFieldState] = useState(false);
   const [containerValue, setContainerValue] = useState(null);
+  const [finish, setFinish] = useState(false);
 
   // Button to render if scanned == true
-  const ContinueBtn = ({ title }) => (
-    <View>
-      <Button
-        title={"Continue"} 
-        onPress={() => props.navigation.navigate('Preview', {})}
-      >
-          {title}
-      </Button>
+  const ContinuePrompt = ({ title }) => (
+    <View style={styles.modal}>
+      <Text>Item change added. Would you like to..</Text>
+      <View style={styles.modalButtons}>
+        <Button
+          title={"Add / Remove Another"} 
+          style={{margin:5}}
+          onPress={() => props.navigation.navigate('Scanner', {})}
+        >
+            {title}
+        </Button>
+        <Button
+          title={"Preview Changes"} 
+          style={{margin:5}}
+          onPress={() => props.navigation.navigate('Preview', {})}
+        >
+            {title}
+        </Button>
+      </View>
+
     </View>
   );
 
-  const setSelectedContainer = () => {
+  const handleContinuePress = () => {
+    const changeData = {'itemID': heldItem, 'container': containerValue, 'count': theCount};
+    if(heldItem && containerValue && theCount){
+      EventEmitter.dispatch('inventoryChangeEvent', changeData);
 
-  }
+      setFinish(true);
+    }
+    else if(!containerValue){
+      Alert.alert("Missing Container Input", "Please select a container.")
+    }
+    else if(!theCount){
+      Alert.alert("Missing Amount to Add Input", "Please select an amount to add or subtract.")
+    }
+  
 
-  const updateContainerOptions = () => {
 
   }
 
   const onCountChange = (value) => {
     setCounter(value);
-  }
-
-  const handleItemChangeSubmit = () => {
-    const changeData = {'itemID': heldItem, 'container': containerValue, 'count': theCount};
-
-    EventEmitter.dispatch('inventoryChangeEvent', changeData);
-
-    props.navigation.navigate('Preview', {})
   }
 
   return (
@@ -69,12 +84,12 @@ const CounterView = (props) => {
         />
       </View>
       <View style={styles.scrollPicker}>
-        <Text>Ammount to Add ({theCount})</Text>
+        <Text>Amount to Add</Text>
         <TextInput onChangeText={setCounter} style={styles.inputBox} value={theCount} inputMode={"numeric"}></TextInput>
       </View>
-
+      {finish == true && <ContinuePrompt></ContinuePrompt>}
       <View style={styles.buttons}>
-        <Button title="Add / Remove" onPress={handleItemChangeSubmit}></Button>
+        <Button title="Continue" onPress={handleContinuePress}></Button>
       </View>
      
     </View>
@@ -108,7 +123,25 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flex: 1,
+    margin: 5,
+  },
+  modal: {
+    zIndex: 2,
+    position: 'absolute',
+    backgroundColor: '#e3e3e3',
+    borderColor: 'black',
+    borderWidth: 3,
+    padding: 75,
+    alignContent: 'center',
+    alignItems: 'center',
+    bottom: 0,
+    
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    gap: 5,
   }
+
 });
 
 export default CounterView;

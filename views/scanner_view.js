@@ -7,7 +7,7 @@ import { EventEmitter } from '../events/eventIndex';
 
 const ScannerView = (props) => {
 
-const { eventName } = props.route.params;
+  const { heldItem, items } = props.route.params;
 
   const [scanned, setScanned] = useState(false);
 
@@ -33,7 +33,7 @@ const { eventName } = props.route.params;
 
   return (
     <View style={styles.container}>
-      <Scanner handleScan={handleBarCodeScanned}></Scanner>
+      <Scanner handleScan={handleBarCodeScanned} heldItem={heldItem}></Scanner>
       {scanned == true && <ContinueBtn></ContinueBtn>}
     </View>
   );

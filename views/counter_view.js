@@ -50,7 +50,7 @@ const CounterView = (props) => {
     const changeData = {'itemID': heldItem, 'container': containerValue, 'count': theCount};
     if(heldItem && containerValue && theCount){
       EventEmitter.dispatch('inventoryChangeEvent', changeData);
-
+      Alert.alert("changeData", JSON.stringify(changeData))
       setFinish(true);
     }
     else if(!containerValue){

@@ -14,6 +14,7 @@ export default function Scanner(props) {
   const [isVisible, setVisibility] = useState(false);
   const [barcode, setBarcode] = useState("")  ;
 
+
   const today = new Date();
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export default function Scanner(props) {
       </View>
       <View style={styles.buttonDisplay}>
         <Button title="Push Me" onPress={() => { toggleVis }} />
-        <Button title="Faux Scan" onPress={() => props.handleScan('1234567890') } />
+        <Button title="Faux Scan" onPress={() => props.handleScan() } />
       </View>
     </View>
   );

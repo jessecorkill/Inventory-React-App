@@ -14,8 +14,8 @@ const Stack = createNativeStackNavigator();
 
 
 export default function App() {
-    //const [hasPermission, setHasPermission] = useState(null);
-    const [inventoryUpdate, setInventoryUpdate] = useState([]); //Will be an array of arrays (inventory containers). Each container object will have sub item objects with details of the items being added / removed.
+    //const [hasPermission, setHasPermission] = useState(null); // {containerA:{items:[{a},{b}]},containerB{items:[{c},{d}]}}
+    const [inventoryUpdate, setInventoryUpdate] = useState({}); // Will be an array of arrays (inventory containers). Each container object will have sub item objects with details of the items being added / removed.
     const [selectedItem, selectItem] = useState(null);
     const [inventoryHistory, setInventoryHistory] = useState([]);    
     const [liveInventory, setLiveInventory] = useState([]);
@@ -29,24 +29,24 @@ export default function App() {
 
     //Function to allow child components to add new changes to inventory. 
     const addInventoryChange = (itemChange) => {
-      let containerKey = {'Truck A': 0, 'Truck B': 1, 'Warehouse A': 2, 'Warehouse B': 3} // Will have to by dynamically generated with a callback function
       const newInventory = inventoryUpdate;
-      const contIndex = containerKey[itemChange.container]; // Eg. 1
-      if(!newInventory[contIndex]){
-        newInventory[contIndex] = []; // Initiate container if it doesn't exist. 
-      }           
-      newInventory[contIndex].push(itemChange); // Make a new version of the inventory change index w/ the new item change object added.
+      let containerKey = itemChange.container; // Eg. 'Truck A' 
+      if(!newInventory[containerKey]){
+        newInventory[containerKey] = {items:[]}
+      }
+      newInventory[containerKey]['items'].push(itemChange); // Make a new version of the inventory change index w/ the new item change object added.
       setInventoryUpdate(newInventory);
       
-      // const newHistory = inventoryHistory.append(newInventory); 
+      // const newHistory = inventoryHistory.append(newInventory);
       // setInventoryHistory(newHistory);
+      //Alert.alert("inventory", inventoryUpdate.toString());
     }
 
     EventEmitter.subscribe('inventoryChangeEvent', (event) => addInventoryChange(event));
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>        
+      <Stack.Navigator>
         <Stack.Screen name="Main" component={MainMenu}></Stack.Screen>
         <Stack.Screen name="Scanner"  component={ScannerView} initialParams={{heldItem: selectedItem, items: inventoryUpdate}}></Stack.Screen>
         <Stack.Screen name="Counter" component={CounterView} initialParams={{heldItem: selectedItem, items: inventoryUpdate}}></Stack.Screen>

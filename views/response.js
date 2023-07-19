@@ -16,6 +16,8 @@ const ResponseView = (props) => {
 
   return (
     <View style={styles.container}>
+      <Text>Done!</Text>
+      <Button title="Back to Menu"></Button>
     </View>
   );
 };

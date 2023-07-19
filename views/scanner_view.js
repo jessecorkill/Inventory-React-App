@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
 import Scanner from '../components/scanner';
 import { EventEmitter } from '../events/eventIndex';
-import { GenerateRandomNumberString } from '../services/randomNumString';
+import { GenerateRandomNumberString } from '../services/dataTools';
 
 
 

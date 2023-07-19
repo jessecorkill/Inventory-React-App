@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react';
 import {View, Text, StyleSheet, Button, SectionList, Alert} from 'react-native';
 import Scanner from '../components/scanner';
 import { EventEmitter } from '../events/eventIndex';
-import {generateRandomNumberString} from '../services/randomNumString'
+import {generateRandomNumberString} from '../services/dataTools'
 
 //function to reformat inventory data to fit for a SectionList. Output should shape like [{title: '', data: [x,y,z]},{title: '', data: [x,y,z]}]
 const InventoryList = (inventoryObj) => {  
@@ -11,12 +11,12 @@ const InventoryList = (inventoryObj) => {
   let i = 0;
   for(const container in inventoryObj){
     let obj = {}
-    obj['title'] = invArrKeys[i]
-    obj['data'] = container.items
+    let title = invArrKeys[i];
+    obj['title'] = title
+    obj['data'] = inventoryObj[title].items
     SectionListArr.push(obj);
     i++
   }
-
   return SectionListArr;
 }
 
@@ -34,17 +34,18 @@ let inventoryArr = InventoryList(items);
 
 
   return (
-    <View style={styles.container}>
-      <Text>Preview View</Text>
-      <SectionList
-        sections={inventoryArr}
-        renderItem={({item}) => <Text>{item.itemID}</Text>}
-        renderSectionHeader={({section}) => (
-          <Text style={styles.sectionHeader}>{section.title}</Text>
-        )}
-        keyExtractor={item => `basicListEntry-${item.itemID}`}
-      />
-    </View>
+      <View style={styles.container}>
+        <SectionList
+          sections={inventoryArr}
+          renderItem={({item}) => <Text>{item.itemID}----&gt;{item.count}</Text>}
+          renderSectionHeader={({section}) => (
+            <Text style={styles.sectionHeader}>{section.title}</Text>
+          )}
+          keyExtractor={item => `basicListEntry-${item.itemID}`}
+        />
+        <Button style={styles.submit} title='Submit'></Button>
+      </View>
+
   );
 };
 
@@ -58,6 +59,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  sectionHeader: {
+    fontSize: 20,
+    textDecorationStyle: 'underline'
+
+  },
+  submit: {
+
+  }
+
 });
 
 export default Preview;

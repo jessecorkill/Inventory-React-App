@@ -48,7 +48,7 @@ export default function Scanner(props) {
   // Main component UI
   return (
     <View style={styles.container}>
-      <Text>Barcode: {props.heldItem}</Text>
+      {props.heldItem && <Text>Barcode: {props.heldItem}</Text>}
       <View style={styles.barcodeDisplay}>
         <StatusBar style="auto" />
         <BarCodeScanner onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} style={styles.barcode} />

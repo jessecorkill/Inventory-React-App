@@ -1,26 +1,28 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import { View, Text, StyleSheet, Button, TextInput, Alert } from 'react-native';
 import ScrollPicker from 'react-native-wheel-scrollview-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { EventEmitter } from '../events/eventIndex';
+import { DataTools } from '../services/dataTools';
 
 const scrollWheelData = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; 
 
 const CounterView = (props) => {
 
-  const { heldItem, items } = props.route.params;
+  const { heldItem, items, inventory } = props.route.params;
 
   const [theCount, setCounter] = useState('');
   //To-Do have this populate from API data source
-  const [containerOptions, setContainerOptions] = useState([
-    {label: 'Truck A', value: 'Truck A'},
-    {label: 'Truck B', value: 'Truck B'},
-    {label: 'Warehouse A', value: 'Warehouse A'},
-    {label: 'Warehouse B', value: 'Warehouse B'},
-  ]);
+  const [containerOptions, setContainerOptions] = useState(null);
   const [containerFieldState, setContainerFieldState] = useState(false);
   const [containerValue, setContainerValue] = useState(null);
   const [finish, setFinish] = useState(false);
+
+  useEffect(() => {
+    if(!containerOptions){
+      setContainerOptions(DataTools.getContainerOptions(inventory));
+    }
+  })
 
   // Button to render if scanned == true
   const ContinuePrompt = ({ title }) => (
@@ -50,6 +52,7 @@ const CounterView = (props) => {
     const changeData = {'itemID': heldItem, 'container': containerValue, 'count': theCount};
     if(heldItem && containerValue && theCount){
       EventEmitter.dispatch('inventoryChangeEvent', changeData);
+      EventEmitter.unsubscribe('inventoryChangeEvent');
       Alert.alert("changeData", JSON.stringify(changeData))
       setFinish(true);
     }
@@ -74,14 +77,14 @@ const CounterView = (props) => {
         <Text>{heldItem}</Text>
         <Text style={styles.title}>Product Name</Text>
         <Text>Container To Add Item To</Text>
-        <DropDownPicker
+        {containerOptions && <DropDownPicker
           open={containerFieldState}
           value={containerValue}
           items={containerOptions}
           setOpen={setContainerFieldState} //State callback that is called when the user presses the picker.
           setValue={setContainerValue} //State callback that is called when the value changes.
           setItems={setContainerOptions} //State callback that is called to modify or add new items.
-        />
+        />}
       </View>
       <View style={styles.scrollPicker}>
         <Text>Amount to Add</Text>

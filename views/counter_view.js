@@ -5,6 +5,27 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { EventEmitter } from '../events/eventIndex';
 import { DataTools } from '../services/dataTools';
 
+  // Button to render if scanned == true
+  const ContinuePrompt = (props) => (
+    <View style={styles.modal}>
+      <Text>Item change added. Would you like to..</Text>
+      <View style={styles.modalButtons}>
+        <Button
+          title={"Add / Remove Another"} 
+          style={{margin:5}}
+          onPress={() => {props.submitFunction(); props.navigation.navigate('Scanner', {}); }}
+        >
+        </Button>
+        <Button
+          title={"Preview Changes"} 
+          style={{margin:5}}
+          onPress={() => {props.submitFunction(); props.navigation.navigate('Preview', {}); }}
+        >
+        </Button>
+      </View>
+    </View>
+  );
+
 const scrollWheelData = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; 
 
 const CounterView = (props) => {
@@ -22,49 +43,27 @@ const CounterView = (props) => {
     if(!containerOptions){
       setContainerOptions(DataTools.getContainerOptions(inventory));
     }
-  })
+  }, [containerOptions]);
 
-  // Button to render if scanned == true
-  const ContinuePrompt = ({ title }) => (
-    <View style={styles.modal}>
-      <Text>Item change added. Would you like to..</Text>
-      <View style={styles.modalButtons}>
-        <Button
-          title={"Add / Remove Another"} 
-          style={{margin:5}}
-          onPress={() => props.navigation.navigate('Scanner', {})}
-        >
-            {title}
-        </Button>
-        <Button
-          title={"Preview Changes"} 
-          style={{margin:5}}
-          onPress={() => props.navigation.navigate('Preview', {})}
-        >
-            {title}
-        </Button>
-      </View>
-
-    </View>
-  );
-
-  const handleContinuePress = () => {
-    const changeData = {'itemID': heldItem, 'container': containerValue, 'count': theCount};
-    if(heldItem && containerValue && theCount){
+  const handleSubmit = (itemArg, containerArg, countArg ) => {
+    const changeData = {'itemID': itemArg, 'container': containerArg, 'count': countArg};
+    
+    if(itemArg && containerArg && countArg){
       EventEmitter.dispatch('inventoryChangeEvent', changeData);
-      EventEmitter.unsubscribe('inventoryChangeEvent');
       Alert.alert("changeData", JSON.stringify(changeData))
-      setFinish(true);
+
     }
-    else if(!containerValue){
+    else if(!containerArg){
       Alert.alert("Missing Container Input", "Please select a container.")
     }
-    else if(!theCount){
+    else if(!countArg){
       Alert.alert("Missing Amount to Add Input", "Please select an amount to add or subtract.")
     }
-  
+    setFinish(false); 
+  }
 
-
+  const handleContinuePress = () => {
+    setFinish(true); // Re-renders comonent
   }
 
   const onCountChange = (value) => {
@@ -90,7 +89,7 @@ const CounterView = (props) => {
         <Text>Amount to Add</Text>
         <TextInput onChangeText={setCounter} style={styles.inputBox} value={theCount} inputMode={"numeric"}></TextInput>
       </View>
-      {finish == true && <ContinuePrompt></ContinuePrompt>}
+      {finish == true && <ContinuePrompt submitFunction={() => handleSubmit(heldItem,containerValue,theCount)} navigation={props.navigation}></ContinuePrompt>}
       <View style={styles.buttons}>
         <Button title="Continue" onPress={handleContinuePress}></Button>
       </View>

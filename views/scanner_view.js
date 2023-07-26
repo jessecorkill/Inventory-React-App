@@ -41,7 +41,7 @@ const ScannerView = (props) => {
     //alert(JSON.stringify(props))
     //props.route.holdItem(itemData); // Undefined is not a function, meaning it doesn't think holdItem is a function
 
-    setScanned(true);
+    setScanned(true); //Re-Renders
   }
 
   return (

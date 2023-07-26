@@ -22,7 +22,7 @@ const InventoryList = (inventoryObj) => {
 
 const Preview = (props) => {
 
-const { items } = props.route.params; // Not working
+const { items } = props.route.params; 
 Alert.alert('Inventory Obj', JSON.stringify(items))
 let testInv = [{title: 'blah', data: [{itemID: 123, count: 3},{itemID: 133, count: 3},{itemID: 143, count: 3}]},{title: 'foo', data: [{itemID: 163, count: 3},{itemID: 173, count: 3},{itemID: 183, count: 3}]}]
 let inventoryArr = InventoryList(items);

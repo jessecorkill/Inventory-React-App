@@ -25,6 +25,9 @@ export default function Scanner(props) {
     })();
   }, []);
 
+  // useEffect(() =>{
+
+  // }, [data])
   const handleBarCodeScanned = ({ type, data }) => {
     setBarcode(data);
     //setScanned(true);

@@ -17,9 +17,9 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
     //const [hasPermission, setHasPermission] = useState(null); // {containerA:{items:[{a},{b}]},containerB{items:[{c},{d}]}}
-    const [inventoryUpdate, setInventoryUpdate] = useState({}); // Will be an array of arrays (inventory containers). Each container object will have sub item objects with details of the items being added / removed.
+    const [inventoryUpdate, setInventoryUpdate] = useState({}); // Will be an object of arrays (inventory containers). Each container object will have sub item objects with details of the items being added / removed.
     const [selectedItem, selectItem] = useState(null);
-    const [inventoryHistory, setInventoryHistory] = useState([]);    
+    const [inventoryHistory, setInventoryHistory] = useState([]);
     const [liveInventory, setLiveInventory] = useState(null);
 
     //Get Current Inventory from the server
@@ -45,10 +45,17 @@ export default function App() {
         newInventory[containerKey] = {items:[]}
       }
       newInventory[containerKey]['items'].push(itemChange); // Make a new version of the inventory change index w/ the new item change object added.
-      setInventoryUpdate(newInventory);
-      
-      // const newHistory = inventoryHistory.append(newInventory);
-      // setInventoryHistory(newHistory);
+      let lastElement = inventoryHistory[inventoryHistory.length - 1];
+      if(lastElement !== newInventory || inventoryHistory.length == 0){ // Ensure that this isn't a re-run of the same item.
+        setInventoryUpdate(newInventory);
+        let tempHistory = inventoryHistory;
+        tempHistory.push(newInventory);
+        let newHistory = tempHistory;
+        setInventoryHistory(newHistory);
+      }
+      else{
+        Alert.alert("Warning", 'addInventoryChange ran more than once!')
+      } 
       //Alert.alert("inventory", inventoryUpdate.toString());
     }
 

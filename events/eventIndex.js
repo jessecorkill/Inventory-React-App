@@ -11,14 +11,13 @@ export const EventEmitter = {
         if(!this.events[event]) this.events[event] = []
         this.events[event].push(callback)
     },
-    unsubscribe: function (event){
-        if (!this.events[event]){
-            return;
-        }
-        else{
-            this.events[event] = null;
-        } 
+    unsubscribe: function (event, callback){
+        if (!this.events[event]) return;
 
+        const index = this.events[event].indexOf(callback);
+        if (index !== -1) {
+            this.events[event].splice(index, 1);
+        }
     } 
     //The subscribe method is used to add a callback function to a specific event.
     //It checks if the event already exists in the events object and if not, initializes it as an empty array.

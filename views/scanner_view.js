@@ -12,6 +12,8 @@ const ScannerView = (props) => {
 
   const [scanned, setScanned] = useState(false);
 
+
+
   // Button to render if scanned == true
   const ContinueBtn = ({ title }) => (
     <View>
@@ -23,7 +25,7 @@ const ScannerView = (props) => {
       </Button>
     </View>
   );
-
+ 
   //Function to pass to sub components to change the state of 'scanned'
   const handleBarCodeScanned = (itemData) => {
     if(itemData){

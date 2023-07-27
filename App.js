@@ -39,19 +39,19 @@ export default function App() {
 
     //Function to allow child components to add new changes to inventory. 
     const addInventoryChange = (itemChange) => {
-      const newInventory = inventoryUpdate;
+      let newInventory = { ...inventoryUpdate };
       let containerKey = itemChange.container; // Eg. 'Truck A' 
       if(!newInventory[containerKey]){
-        newInventory[containerKey] = {items:[]}
+        newInventory[containerKey] = {items:[]} //Initiate container array if it doesn't exist
       }
       newInventory[containerKey]['items'].push(itemChange); // Make a new version of the inventory change index w/ the new item change object added.
       let lastElement = inventoryHistory[inventoryHistory.length - 1];
       if(lastElement !== newInventory || inventoryHistory.length == 0){ // Ensure that this isn't a re-run of the same item.
-        setInventoryUpdate(newInventory);
+        setInventoryUpdate(newInventory); 
         let tempHistory = inventoryHistory;
         tempHistory.push(newInventory);
         let newHistory = tempHistory;
-        setInventoryHistory(newHistory);
+        setInventoryHistory(newHistory); 
       }
       else{
         Alert.alert("Warning", 'addInventoryChange ran more than once!')

@@ -1,11 +1,8 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect} from 'react';
 import {View, Text, StyleSheet, Button, SectionList, Alert} from 'react-native';
-import Scanner from '../components/scanner';
-import { EventEmitter } from '../events/eventIndex';
-import {generateRandomNumberString} from '../services/dataTools'
 
 //function to reformat inventory data to fit for a SectionList. Output should shape like [{title: '', data: [x,y,z]},{title: '', data: [x,y,z]}]
-const InventoryList = (inventoryObj) => {  
+const InventoryList = (inventoryObj) => {   
   const SectionListArr = []; // new array to fill with objects
   const invArrKeys = Object.keys(inventoryObj); //Containers
   let i = 0;
@@ -21,9 +18,20 @@ const InventoryList = (inventoryObj) => {
 }
 
 const Preview = (props) => {
+  const [items, setItems] = useState([]);
 
-const { items } = props.route.params; 
-Alert.alert('Inventory Obj', JSON.stringify(items))
+
+  // let liveItems = props.route.params.items;
+
+//Double check the items var is up to date with it's parent's state.
+useEffect(() => {
+  setItems(props.route.params.items);
+}, [props.route.params.items]); // Trigger the effect when 'items' prop changes
+
+useEffect(() => {
+  Alert.alert('Inventory Obj', JSON.stringify(items))
+}, [items])
+
 let testInv = [{title: 'blah', data: [{itemID: 123, count: 3},{itemID: 133, count: 3},{itemID: 143, count: 3}]},{title: 'foo', data: [{itemID: 163, count: 3},{itemID: 173, count: 3},{itemID: 183, count: 3}]}]
 let inventoryArr = InventoryList(items);
 //Alert.alert('inventoryArr', JSON.stringify(inventoryArr))

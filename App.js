@@ -34,7 +34,17 @@ export default function App() {
       selectItem(itemCode)
       //Alert.alert('Item Held', itemCode);
     }
-    EventEmitter.subscribe('itemScannedEvent', (event) => holdItem(event));
+
+    useEffect(() => {
+      //Subscribe when the component mounts
+      EventEmitter.subscribe('itemScannedEvent', (event) => holdItem(event));
+
+      //Unsub when the component unmounts
+      return () => {
+        EventEmitter.unsubscribe('itemScannedEvent', (event) => holdItem(event))
+      }
+    }, [])
+
     //EventEmitter.unsubscribe('itemScannedEvent', (event) => holdItem(event));
 
     //Function to allow child components to add new changes to inventory. 
@@ -47,7 +57,8 @@ export default function App() {
       newInventory[containerKey]['items'].push(itemChange); // Make a new version of the inventory change index w/ the new item change object added.
       let lastElement = inventoryHistory[inventoryHistory.length - 1];
       if(lastElement !== newInventory || inventoryHistory.length == 0){ // Ensure that this isn't a re-run of the same item.
-        setInventoryUpdate(newInventory); 
+        setInventoryUpdate(newInventory); // May be overwriting existing inventoryUpdate instead of appending to it.
+        Alert.alert("Inventory Update", JSON.stringify(newInventory))
         let tempHistory = inventoryHistory;
         tempHistory.push(newInventory);
         let newHistory = tempHistory;
@@ -56,10 +67,18 @@ export default function App() {
       else{
         Alert.alert("Warning", 'addInventoryChange ran more than once!')
       } 
-      //Alert.alert("inventory", inventoryUpdate.toString());
     }
 
-    EventEmitter.subscribe('inventoryChangeEvent', (event) => addInventoryChange(event));
+    useEffect(() => {
+      // Subscribe when the component mounts
+      EventEmitter.subscribe('inventoryChangeEvent', (event) => addInventoryChange(event));
+
+      // Unsubscribe when the component unmounts
+      // return () => {
+      //   EventEmitter.unsubscribe('inventoryChangeEvent', (event) => addInventoryChange(event));
+      // };
+    }, []); // Empty dependency array ensures the subscription happens only once on mount
+
 
   return (
     <NavigationContainer>

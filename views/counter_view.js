@@ -13,13 +13,14 @@ import { DataTools } from '../services/dataTools';
         <Button
           title={"Add / Remove Another"} 
           style={{margin:5}}
-          onPress={() => {props.submitFunction(); props.navigation.navigate('Scanner', {}); }}
+          onPress={() => { props.navigation.navigate('Scanner', {}); }}
         >
         </Button>
+        <Button title={"Submit Change"} style={{margin:5}} onPress={() => {props.submitFunction();}}></Button>
         <Button
           title={"Preview Changes"} 
           style={{margin:5}}
-          onPress={() => {props.submitFunction(); props.navigation.navigate('Preview', {}); }}
+          onPress={() => {props.navigation.navigate('Preview', {}); }}
         >
         </Button>
       </View>

@@ -49,7 +49,7 @@ export default function App() {
 
     //Function to allow child components to add new changes to inventory. 
     const addInventoryChange = (itemChange) => {
-      let newInventory = { ...inventoryUpdate };
+      let newInventory = { ...inventoryUpdate }; // May be out of date
       let containerKey = itemChange.container; // Eg. 'Truck A' 
       if(!newInventory[containerKey]){
         newInventory[containerKey] = {items:[]} //Initiate container array if it doesn't exist
@@ -57,7 +57,7 @@ export default function App() {
       newInventory[containerKey]['items'].push(itemChange); // Make a new version of the inventory change index w/ the new item change object added.
       let lastElement = inventoryHistory[inventoryHistory.length - 1];
       if(lastElement !== newInventory || inventoryHistory.length == 0){ // Ensure that this isn't a re-run of the same item.
-        setInventoryUpdate(newInventory); // May be overwriting existing inventoryUpdate instead of appending to it.
+        setInventoryUpdate(newInventory); 
         Alert.alert("Inventory Update", JSON.stringify(newInventory))
         let tempHistory = inventoryHistory;
         tempHistory.push(newInventory);

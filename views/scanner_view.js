@@ -1,8 +1,9 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect, useRef } from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
 import Scanner from '../components/scanner';
 import { EventEmitter } from '../events/eventIndex';
 import { GenerateRandomNumberString } from '../services/dataTools';
+import {logState, logLifecycleEvent} from '../services/logger.js';
 
 
 
@@ -11,8 +12,29 @@ const ScannerView = (props) => {
   const { heldItem, items } = props.route.params;
 
   const [scanned, setScanned] = useState(false);
+  const prevStateRef = useRef(null);
+  const state = {
+    heldItem : heldItem,
+    scanned : scanned
+  }
+  //Logging START ---------------------------------------------------------------------
+  useEffect(() => { // componentDidMount
+    logLifecycleEvent('componentDidMount', 'ScannerView Component mounted');
+    logState(state);
 
+    return () => { //componentWillUnmount
+      logLifecycleEvent('componentWillUnmount', 'ScannerView Component will unmount');        
+    };
+  })
 
+  useEffect(() => { //componentDidUpdate
+    if (prevStateRef.current) {
+      logLifecycleEvent('componentDidUpdate', 'ScannerView Component updated');
+      logState(prevStateRef.current);
+    }
+  });
+
+  //Logging END ---------------------------------------------------------------------
 
   // Button to render if scanned == true
   const ContinueBtn = ({ title }) => (

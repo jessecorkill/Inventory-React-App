@@ -1,9 +1,10 @@
-import {React, useState, useEffect} from 'react';
+import {React, useState, useEffect, useRef} from 'react';
 import { View, Text, StyleSheet, Button, TextInput, Alert } from 'react-native';
 import ScrollPicker from 'react-native-wheel-scrollview-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { EventEmitter } from '../events/eventIndex';
 import { DataTools } from '../services/dataTools';
+import {logState, logLifecycleEvent} from '../services/logger.js';
 
   // Button to render if scanned == true
   const ContinuePrompt = (props) => (
@@ -39,6 +40,34 @@ const CounterView = (props) => {
   const [containerFieldState, setContainerFieldState] = useState(false);
   const [containerValue, setContainerValue] = useState(null);
   const [finish, setFinish] = useState(false);
+
+  const state = {
+    //containerOptions : containerOptions,
+    containerFieldState : containerFieldState,
+    containerValue : containerValue,
+    finish : finish
+  };
+  const prevStateRef = useRef(null);
+
+  //Logging START ---------------------------------------------------------------------
+  useEffect(() => { // componentDidMount
+    logLifecycleEvent('componentDidMount', 'CounterView Component mounted');
+    logState(state);
+
+    return () => { //componentWillUnmount
+      logLifecycleEvent('componentWillUnmount', 'CounterView Component will unmount');        
+    };
+  })
+
+  useEffect(() => { //componentDidUpdate
+    if (prevStateRef.current) {
+      logLifecycleEvent('componentDidUpdate', 'CounterView Component updated');
+      logState(prevStateRef.current);
+    }
+  });
+
+  //Logging END ---------------------------------------------------------------------
+
 
   useEffect(() => {
     if(!containerOptions){

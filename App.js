@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import { StyleSheet, Text, View, Alert, Component, Button} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -7,9 +7,10 @@ import ScannerView from './views/scanner_view.js';
 import CounterView from './views/counter_view.js';
 import Preview from './views/preview_view.js';
 import ResponseView from './views/response.js';
-import {EventEmitter} from './events/eventIndex.js'
-import {GetData} from './services/get_data.js'
+import {EventEmitter} from './events/eventIndex.js';
+import {GetData} from './services/get_data.js';
 import { DataTools } from './services/dataTools.js';
+import {logState, logLifecycleEvent} from './services/logger.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,32 @@ export default function App() {
     const [selectedItem, selectItem] = useState(null);
     const [inventoryHistory, setInventoryHistory] = useState([]);
     const [liveInventory, setLiveInventory] = useState(null);
+    const prevStateRef = useRef(null);
+
+    const state = {
+      inventoryUpdate : inventoryUpdate,
+      selectedItem : selectedItem,
+      inventoryHistory : inventoryHistory,
+      //liveInventory : liveInventory
+    };
+    //Logging START ---------------------------------------------------------------------
+    useEffect(() => { // componentDidMount
+      logLifecycleEvent('componentDidMount', 'App Component mounted');
+      logState(state);
+
+      return () => { //componentWillUnmount
+        logLifecycleEvent('componentWillUnmount', 'App Component will unmount');        
+      };
+    })
+
+    useEffect(() => { //componentDidUpdate
+      if (prevStateRef.current) {
+        logLifecycleEvent('componentDidUpdate', 'App Component updated');
+        logState(prevStateRef.current);
+      }
+    });
+  
+    //Logging END ---------------------------------------------------------------------
 
     //Get Current Inventory from the server
     useEffect(() => {
